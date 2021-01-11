@@ -1,0 +1,1515 @@
+@prefix : <http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology> .
+
+<http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology> rdf:type owl:Ontology ;
+                                                                             rdfs:label "The Fake News Ontology" .
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#advertises
+:advertises rdf:type owl:ObjectProperty ;
+            owl:inverseOf :isAdvertisedBy ;
+            rdfs:domain :Social_Media_Agent ;
+            rdfs:range :Advert ;
+            rdfs:comment """The role advertises refers to the Advert of an Advertiser. It is the inverse of the role isAdvertisedBy.
+Note that the advertiser does not need to be the user that created, published or interacted with the content. For instance, an user can interact with some content ADVERT01 posted by an influencer, that contains advertising of a product of the company ADVERTISER01. 
+In this case, ADVERTISER01 advertises ADVERT01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasChannelAdmin
+:hasChannelAdmin rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :hasRelationTargetUser ;
+                 rdfs:domain :ChannelRelation ;
+                 rdfs:range :Social_Media_Agent ;
+                 rdfs:comment "SubProperty of hasRelationTargetUser that applies when the relation is a ChannelRelation" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasCircus
+:hasCircus rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :hasPart ;
+           rdfs:domain :News_Transmission_Event ;
+           rdfs:range :SocialMediaRelation ;
+           rdfs:comment """Links a News_Transmission_Event to (at most) an SocialMediaRelation, that determines the sort of relationship that the social media user of the News_Transmission_Event had with the context where the associated Social_Media_Object appeared.
+
+Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+FNTE01 hasCircus CIR01
+then:
+CIR01 partOf FNTE01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasContent
+:hasContent rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :hasPart ;
+            rdfs:domain :News_Transmission_Event ;
+            rdfs:range :Social_Media_Object ;
+            rdfs:comment """Links a News_Transmission_Event to exactly one Social_Media_Object that determines the object that constitutes the fake news. Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+FNTE01 hasContent CON01
+then:
+CON01 partOf FNTE01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasCreatedDate
+:hasCreatedDate rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :hasDateMetadata ;
+                rdfs:domain :Social_Media_Object ;
+                rdfs:range :Date ;
+                rdfs:comment "Links a Social_Media_Object to a Date Metadata_Object that represents the creation date of the content." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDateMetadata
+:hasDateMetadata rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :hasPart ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( :SearchResult
+                                             :Social_Media_Object
+                                           )
+                             ] ;
+                 rdfs:range :Date ;
+                 rdfs:comment "Links a SearchResult or a Social_Media_Object to a Date Metadata_Object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasEngagement
+:hasEngagement rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :hasPart ;
+               rdfs:domain :News_Transmission_Event ;
+               rdfs:range :Engagement ;
+               rdfs:comment """Links a News_Transmission_Event to (at most) an Engagement object, that determines the sort of engagement that the social media user of the News_Transmission_Event had with the Social_Media_Object associated with it.
+Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+FNTE01 hasEngagement EN01
+then:
+EN01 partOf FNTE01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasEntities
+:hasEntities rdf:type owl:ObjectProperty ;
+             rdfs:domain :Tweet ;
+             rdfs:range :Tweet_Entities ;
+             rdfs:comment "The role hasEntities links a tweet and tweet entities (e.g., hashtags)." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasGroupMember
+:hasGroupMember rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :hasRelationTargetUser ;
+                rdfs:domain :GroupMembershipRelation ;
+                rdfs:range :Social_Media_Agent ;
+                rdfs:comment "SubProperty of hasRelationTargetUser that applies when the relation is a GroupMemnershipRelation" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasIncludedURL
+:hasIncludedURL rdf:type owl:ObjectProperty ;
+                rdfs:domain :Tweet_Entities ;
+                rdfs:range :IncludedURL ;
+                rdfs:comment "The role hasIncludedURL represent URLs included in a social media object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasMention
+:hasMention rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf owl:topObjectProperty ;
+            owl:inverseOf :mentionsUser ;
+            rdfs:domain :Social_Media_User ;
+            rdfs:range :Mentions ;
+            rdfs:comment """The role hasMention refers to a Mention that a Social_Media_User has got. It is the inverse of mentionsUser.
+
+For instance, if USER01 is partOf a FakeNewsTransmissionEvent FNTE01, that an engagement of the type Mention MEN01 which consists on the user mentioning another user USER02, then USER02 hasMention MEN01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPart
+:hasPart rdf:type owl:ObjectProperty ;
+         owl:inverseOf :partOf ;
+         rdfs:domain :NewsConcept ;
+         rdfs:range :NewsConcept ;
+         rdfs:comment "The hasPart role is interpreted in the standard mereotopological sense. It is the inverse of the partOf role." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasProfileBackground
+:hasProfileBackground rdf:type owl:ObjectProperty ;
+                      rdfs:subPropertyOf :hasUserImage ;
+                      rdfs:domain :Social_Media_User ;
+                      rdfs:range :Profile_Background ;
+                      rdfs:comment "hasProfileBackground represents  metadata about the user's profile background image." ,
+                                   "hashasProfileBackgrounde represents  metadata about the user's profile background image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasProfileBanner
+:hasProfileBanner rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :hasUserImage ;
+                  rdfs:domain :Social_Media_User ;
+                  rdfs:range :Profile_Banner ;
+                  rdfs:comment "hasProfileBanner represents metadata about the user's profile banner image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasProfileImage
+:hasProfileImage rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :hasUserImage ;
+                 rdfs:domain :Social_Media_User ;
+                 rdfs:range :Profile_Image ;
+                 rdfs:comment "hasProfileImage represents metadata about the user's profile image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPublishedDate
+:hasPublishedDate rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :hasDateMetadata ;
+                  rdfs:domain :Social_Media_Object ;
+                  rdfs:range :Date ;
+                  rdfs:comment "Links a Social_Media_Object to a Date Metadata_Object that represents the publication date of the content." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPublisher
+:hasPublisher rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :hasPart ;
+              rdfs:domain :News_Transmission_Event ;
+              rdfs:range :Social_Media_Agent ;
+              rdfs:comment """Links a News_Transmission_Event to exactly one Social_Media_Agent, that determines the agent that is generating the transmission of the fake news. Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+FNTE01 hasPublisher PUB01
+then:
+PUB01 partOf FNTE01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasRelationOriginUser
+:hasRelationOriginUser rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :isRelatedToUser ;
+                       rdfs:domain :SocialMediaRelation ;
+                       rdfs:range :Social_Media_Agent ;
+                       rdfs:comment """Refers to the Social_Media_User from which the SocialMediaRelation originates.
+
+For instance, if USER01 is partOf a News_Transmission_Event FNTE01, with a circus of any type of SocialMediaRelation SMR01 (for instance friendship). then SMR01 hasRelationOriginUser USER01 if USER01 is the user that has a friend.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasRelationTargetUser
+:hasRelationTargetUser rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :isRelatedToUser ;
+                       rdfs:domain :SocialMediaRelation ;
+                       rdfs:range :Social_Media_Agent ;
+                       rdfs:comment """Refers to the Social_Media_User to which a SocialMediaRelation applies to.
+
+For instance, if USER01 is partOf a News_Transmission_Event FNTE01, with a circus of any type of SocialMediaRelation SMR01 (for instance friendship). then SMR01 hasRelationTargetUser USER02 if USER02 is the friend of USER01 that is the circus of the news.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSearchDate
+:hasSearchDate rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :hasDateMetadata ;
+               rdfs:domain :SearchResult ;
+               rdfs:range :Date ;
+               rdfs:comment "Links a SearchResult to a Date Metadata_Object that represents the date of the search." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSocialMetadata
+:hasSocialMetadata rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :hasPart ;
+                   rdfs:domain :Social_Media_Object ;
+                   rdfs:range :Social_Metadata ;
+                   rdfs:comment """Links any Social_Media_Object to some SocialMetadata.
+Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+SMO01 hasMetadata MET01
+then:
+MET01 partOf SMO01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSocialStats
+:hasSocialStats rdf:type owl:ObjectProperty ;
+                rdfs:domain :Social_Media_Object ;
+                rdfs:range :Social_Stats ;
+                rdfs:comment "The role hasSocialStats represents statistical information about social media object (e.g., retweet_count, shares, likes, etc)" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasTweetStats
+:hasTweetStats rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :hasSocialStats ;
+               rdfs:domain :Tweet ;
+               rdfs:range :Tweet_Stats ;
+               rdfs:comment "The role hasTweeStats is particular about Twitter that represents statistical information about a tweet" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasTwitterUserStats
+:hasTwitterUserStats rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf :hasUserStats ;
+                     rdfs:domain :Twitter_User ;
+                     rdfs:range :Twitter_User_Stats .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasUrl
+:hasUrl rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :hasSocialMetadata ;
+        rdfs:domain :Social_Media_Object ;
+        rdfs:range :Url ;
+        rdfs:comment """Links any Social_Media_Object to some URL.
+Because it is a subrole of hasPart, the inverse relation can be accessed via partOf. That is, 
+if:
+SMO01 hasUrl URL01
+then:
+URL01 partOf SMO01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasUserImage
+:hasUserImage rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :hasUserMetadata ;
+              rdfs:domain :Social_Media_User ;
+              rdfs:range :User_Image ;
+              rdfs:comment "hasUserImage represents  metadata about the user images (e.g., profile image, background image, etc.)" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasUserMetadata
+:hasUserMetadata rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :hasPart ;
+                 rdfs:domain :Social_Media_Object ;
+                 rdfs:range :User_Metadata ;
+                 rdfs:comment "The role hasUserMetadata links the social media object with user metadata." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasUserStats
+:hasUserStats rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isRelatedToUser ;
+              rdfs:domain :Social_Media_Agent ;
+              rdfs:range :User_Stats .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isAdvertisedBy
+:isAdvertisedBy rdf:type owl:ObjectProperty ;
+                rdfs:domain :Advert ;
+                rdfs:range :Advertiser ;
+                rdfs:comment """The role isAdvertisedBy refers to the Advertiser of an Advert. It is the inverse of the role advertises.
+Note that the advertiser does not need to be the user that created, published or interacted with the content. For instance, an user can interact with some content ADVERT01 posted by an influencer, that contains advertising of a product of the company ADVERTISER01. 
+In this case, ADVERT01 isAdvertisedBy ADVERTISER01""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isRelatedToInfluencer
+:isRelatedToInfluencer rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :isRelatedToUser ;
+                       rdfs:domain :Paid_Influencer_Advert ;
+                       rdfs:range :Social_Media_Agent ;
+                       rdfs:comment "Relation that links those adverts of the class Paid_Influencer_Advert to the Social_Media_Agent that is the influencer of such an advert." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isRelatedToUser
+:isRelatedToUser rdf:type owl:ObjectProperty ;
+                 rdfs:domain :NewsConcept ;
+                 rdfs:range :Social_Media_User ;
+                 rdfs:comment "isRelatedToUser is a high-level property that subsumes diverse properties that link any sort of NewsConcept to a Social_Media_User" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#mentionsUser
+:mentionsUser rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isRelatedToUser ;
+              rdfs:domain :Mentions ;
+              rdfs:range :Social_Media_User ;
+              rdfs:comment """Refers to the Social_Media_User to which a Mentions Engagement is directed. It is the inverse of hasMention.
+For instance, if MEN01 involves the action of mentionnung the users USER02 and USER03, then:
+(MEN01 tagsUser USER02) and (MEN01 tagsUser USER03)""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#partOf
+:partOf rdf:type owl:ObjectProperty ;
+        rdfs:domain :NewsConcept ;
+        rdfs:range :NewsConcept ;
+        rdfs:comment "The partOf role is interpreted in the standard mereotopological sense. It is the inverse of the hasPart role." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#publishedOn
+:publishedOn rdf:type owl:ObjectProperty ;
+             rdfs:domain :Advert ;
+             rdfs:range :Platform ;
+             rdfs:comment "Links an Advert to some Platform where it is published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#reply_to_tweet
+:reply_to_tweet rdf:type owl:ObjectProperty ;
+                rdfs:domain :Tweet ;
+                rdfs:range :Tweet ;
+                rdfs:comment "This role represents a reply to another tweet" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#reply_to_user
+:reply_to_user rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :isRelatedToUser ;
+               rdfs:domain :Tweet ;
+               rdfs:range :Twitter_User .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#tagsUser
+:tagsUser rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :isRelatedToUser ;
+          rdfs:domain :Tagging ;
+          rdfs:range :Social_Media_User ;
+          rdfs:comment """Refers to the Social_Media_User to which a Tagging Engagement is directed.
+For instance, if TAG01 involves the action of tagging the users USER02 and USER03, then:
+(TAG01 tagsUser USER02) and (TAG01 tagsUser USER03)""" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#UID
+:UID rdf:type owl:DatatypeProperty ;
+     rdfs:domain :NewsConcept ;
+     rdfs:range xsd:long ;
+     rdfs:comment "Unique ID that can be assigned to any instance of the type NewsConcept" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#coordinates
+:coordinates rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+             rdfs:domain :Social_Media_Object ;
+             rdfs:range xsd:string ;
+             rdfs:comment "This property represents the geographic location of this a social media object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#displayURL
+:displayURL rdf:type owl:DatatypeProperty ;
+            rdfs:domain :IncludedURL ;
+            rdfs:range xsd:string ;
+            rdfs:comment "URL of the media to display to clients." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#expandedURL
+:expandedURL rdf:type owl:DatatypeProperty ;
+             rdfs:domain :IncludedURL ;
+             rdfs:range xsd:string ;
+             rdfs:comment "An expanded version of display_url. Links to the media display page" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#follow_requests
+:follow_requests rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Twitter_User_Stats ;
+                 rdfs:comment "The number of request a twitter user sends to other users." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#followers_count
+:followers_count rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Twitter_User_Stats ;
+                 rdfs:range xsd:long ;
+                 rdfs:comment "The number of followers this twitter user currently has." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#friends_count
+:friends_count rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Twitter_User_Stats ;
+               rdfs:range xsd:long ;
+               rdfs:comment "The number of users this account is following." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasAge
+:hasAge rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :hasAgentProperty ;
+        rdfs:domain :Social_Media_User ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Property determining the age of the agent" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasAgentID
+:hasAgentID rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasAgentProperty ;
+            rdfs:domain :Social_Media_Agent ;
+            rdfs:range xsd:string ;
+            rdfs:comment "The string representation of the unique identifier of a user." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasAgentProperty
+:hasAgentProperty rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf owl:topDataProperty ;
+                  rdfs:comment "High-level property that subsumes the set of properties belonging to a social media agent." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasChannelDescription
+:hasChannelDescription rdf:type owl:DatatypeProperty ;
+                       rdfs:subPropertyOf :hasDescription ;
+                       rdfs:domain :ChannelRelation ;
+                       rdfs:comment "Description that can be assigned to a ChannelRelation and provides context on the mentioned channel" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasChannelTitle
+:hasChannelTitle rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf :hasTitle ;
+                 rdfs:domain :ChannelRelation ;
+                 rdfs:comment "Title of the a ChannelRelation. Note that this not make reference to an object of the class Title, subclass of Social_Metadata. Instead, it contains a string value for a less expensive charactersiation." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasComment
+:hasComment rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Comment ;
+            rdfs:range xsd:string ;
+            rdfs:comment "Textual value of a Comment engagement." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDate
+:hasDate rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf :hasDateProperty ;
+         rdfs:domain :Date ;
+         rdfs:comment "Date associated to an object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDateOrderFormat
+:hasDateOrderFormat rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasDateProperty ;
+                    rdfs:domain :NumericDate ;
+                    rdfs:range [ rdf:type rdfs:Datatype ;
+                                 owl:oneOf [ rdf:type rdf:List ;
+                                             rdf:first "dmy" ;
+                                             rdf:rest [ rdf:type rdf:List ;
+                                                        rdf:first "mdy" ;
+                                                        rdf:rest [ rdf:type rdf:List ;
+                                                                   rdf:first "other" ;
+                                                                   rdf:rest [ rdf:type rdf:List ;
+                                                                              rdf:first "ydm" ;
+                                                                              rdf:rest [ rdf:type rdf:List ;
+                                                                                         rdf:first "ymd" ;
+                                                                                         rdf:rest rdf:nil
+                                                                                       ]
+                                                                            ]
+                                                                 ]
+                                                      ]
+                                           ]
+                               ] ;
+                    rdfs:comment "Format regarding the order of the elements Day, Month and Year. A common format is \"dmy\" and the valid formats are {\"dmy\" , \"mdy\" , \"ydm\" , \"ymd\", \"other\"}." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDateProperty
+:hasDateProperty rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf owl:topDataProperty ;
+                 rdfs:comment "High-level property that subsumes the set of properties relating to dates." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDateSeparator
+:hasDateSeparator rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasDateProperty ;
+                  rdfs:domain :NumericDate ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "Character used as a separator in a numerical date format. Two common values are \"/\" and \"-\", as in \"01/09/2003\" and \"01-09-2003\"" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasDescription
+:hasDescription rdf:type owl:DatatypeProperty ;
+                rdfs:domain :NewsConcept ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Description that can be assigned to any instance of the type News_Concept" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasEmail
+:hasEmail rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf :hasAgentProperty ;
+          rdfs:domain :Social_Media_Agent ;
+          rdfs:range xsd:string ;
+          rdfs:comment "Property determining the email of the agent" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasFormattedDate
+:hasFormattedDate rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasDate ;
+                  rdfs:range xsd:dateTime ;
+                  rdfs:comment "Date in dateTime format." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasHashtags
+:hasHashtags rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Tweet_Entities ;
+             rdfs:range xsd:string ;
+             rdfs:comment "A property which represents hashtags in a tweet" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasID
+:hasID rdf:type owl:DatatypeProperty ;
+       rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+       rdfs:domain :Social_Media_Object ;
+       rdfs:range xsd:string ;
+       rdfs:comment "The string representation of the unique identifier of a social media object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasImageFormat
+:hasImageFormat rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+                rdfs:domain :Image ;
+                rdfs:range [ rdf:type rdfs:Datatype ;
+                             owl:oneOf [ rdf:type rdf:List ;
+                                         rdf:first "GIF" ;
+                                         rdf:rest [ rdf:type rdf:List ;
+                                                    rdf:first "JPEG" ;
+                                                    rdf:rest [ rdf:type rdf:List ;
+                                                               rdf:first "PNG" ;
+                                                               rdf:rest [ rdf:type rdf:List ;
+                                                                          rdf:first "WEBP" ;
+                                                                          rdf:rest [ rdf:type rdf:List ;
+                                                                                     rdf:first "other" ;
+                                                                                     rdf:rest rdf:nil
+                                                                                   ]
+                                                                        ]
+                                                             ]
+                                                  ]
+                                       ]
+                           ] ;
+                rdfs:comment "Attribute determining the format of an Image. The possible values are: {\"GIF\" , \"JPEG\" , \"PNG\" , \"WEBP\" , \"other\"}" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasLanguage
+:hasLanguage rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+             rdfs:domain :Social_Media_Object ;
+             rdfs:range xsd:string ;
+             rdfs:comment "This property represents the machine-detected language of social media object text" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasLocation
+:hasLocation rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasAgentProperty ;
+             rdfs:domain :Social_Media_Agent ;
+             rdfs:range xsd:string ;
+             rdfs:comment "The user-defined location for an account’s profile" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasName
+:hasName rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf :hasAgentProperty ;
+         rdfs:domain :Social_Media_Agent ;
+         rdfs:range xsd:string ;
+         rdfs:comment "Property determining the name of the agent" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasOriginalDate
+:hasOriginalDate rdf:type owl:DatatypeProperty ;
+                 rdfs:subPropertyOf :hasDate ;
+                 rdfs:range xsd:string ;
+                 rdfs:comment "Date in the original format in which it was collected." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPlace
+:hasPlace rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+          rdfs:domain :Tweet ;
+          rdfs:range xsd:string ;
+          rdfs:comment "Indicates that the tweet is associated a place" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPlatformDescription
+:hasPlatformDescription rdf:type owl:DatatypeProperty ;
+                        rdfs:subPropertyOf :hasDescription ;
+                        rdfs:domain :Platform ;
+                        rdfs:range xsd:string ;
+                        rdfs:comment "Description that can be assigned to a Platform" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPlatformTitle
+:hasPlatformTitle rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasTitle ;
+                  rdfs:domain :Platform ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "Title of a Platform object. Note that this not make reference to an object of the class Title, subclass of Social_Metadata. Instead, it contains a string value for a less expensive charactersiation." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasPrivacy
+:hasPrivacy rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasAgentProperty ;
+            rdfs:domain :Social_Media_User ;
+            rdfs:range [ rdf:type rdfs:Datatype ;
+                         owl:oneOf [ rdf:type rdf:List ;
+                                     rdf:first "Closed" ;
+                                     rdf:rest [ rdf:type rdf:List ;
+                                                rdf:first "Open" ;
+                                                rdf:rest rdf:nil
+                                              ]
+                                   ]
+                       ] ;
+            rdfs:comment "Property determining the privacy of the social media user, which has as possible values \"open\" and \"closed\"." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasProfileID
+:hasProfileID rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf :hasAgentProperty ;
+              rdfs:domain :Social_Media_Agent ;
+              rdfs:range xsd:string ;
+              rdfs:comment "Property hasProfileID represents a screen name, handle, or alias of a social media user" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSearchText
+:hasSearchText rdf:type owl:DatatypeProperty ;
+               rdfs:domain :SearchResult ;
+               rdfs:range xsd:string ;
+               rdfs:comment "Searched string of a SearchResult engagement." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSocialMediaObjectProperty
+:hasSocialMediaObjectProperty rdf:type owl:DatatypeProperty ;
+                              rdfs:subPropertyOf owl:topDataProperty ;
+                              rdfs:comment "High-level property that subsumes the set of properties belonging to social media objects." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSource
+:hasSource rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+           rdfs:domain :Social_Media_Object ;
+           rdfs:range xsd:string ;
+           rdfs:comment "indicated a web source (e.g., web client, mobile web, etc. )from the Twitter website have a source" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasStatus
+:hasStatus rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf :hasAgentProperty ;
+           rdfs:domain :Social_Media_User ;
+           rdfs:range [ rdf:type rdfs:Datatype ;
+                        owl:oneOf [ rdf:type rdf:List ;
+                                    rdf:first "Non-verified" ;
+                                    rdf:rest [ rdf:type rdf:List ;
+                                               rdf:first "Verified" ;
+                                               rdf:rest rdf:nil
+                                             ]
+                                  ]
+                      ] ;
+           rdfs:comment "Property determining the status of the social media user, which has as possible values \"non-verified\" and \"verified\"" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasSymbols
+:hasSymbols rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Tweet_Entities ;
+            rdfs:range xsd:string ;
+            rdfs:comment "Represents symbols, i.e. $cashtags, included in the text of the Tweet." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasTitle
+:hasTitle rdf:type owl:DatatypeProperty ;
+          rdfs:domain [ rdf:type owl:Class ;
+                        owl:unionOf ( :ChannelRelation
+                                      :Platform
+                                    )
+                      ] ;
+          rdfs:range xsd:string ;
+          rdfs:comment "Title of the object. Note that this not make reference to an object of the class Title, subclass of Social_Metadata. Instead, it contains a string value for a less expensive charactersiation." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasTld
+:hasTld rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :hasUrlProperty ;
+        rdfs:range xsd:string ;
+        owl:versionInfo "Do you prefer having a textual attribute where any value is accepted (this property) or a set of options as in \"urlTld\"?" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasUrlProperty
+:hasUrlProperty rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Url ;
+                rdfs:comment "High-level property that subsumes the set of properties relating to Urls." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasWebsite
+:hasWebsite rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasAgentProperty ;
+            rdfs:domain :Social_Media_Agent ;
+            rdfs:range xsd:string ;
+            rdfs:comment "This propery represents an external website url a user may have." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#hasYearFormat
+:hasYearFormat rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf :hasDateProperty ;
+               rdfs:domain :NumericDate ;
+               rdfs:range [ rdf:type rdfs:Datatype ;
+                            owl:oneOf [ rdf:type rdf:List ;
+                                        rdf:first "aa" ;
+                                        rdf:rest [ rdf:type rdf:List ;
+                                                   rdf:first "aaaa" ;
+                                                   rdf:rest rdf:nil
+                                                 ]
+                                      ]
+                          ] ;
+               rdfs:comment "Format of the year in a numericalDate. It can have two or four diggits: \"aa\" or \"aaaa\"" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#includedURLaddress
+:includedURLaddress rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :IncludedURL ;
+                    rdfs:range xsd:string ;
+                    rdfs:comment "Represents URLs included in the text of a social object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isAlphanumeric
+:isAlphanumeric rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Title ;
+                rdfs:range xsd:boolean ;
+                rdfs:comment "Boolean property determining whether the title is only composed of alphanumeric characters." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isCommercialAdvert
+:isCommercialAdvert rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+                    rdfs:domain :Advert ;
+                    rdfs:range xsd:boolean ;
+                    rdfs:comment "Boolean property determining if an advert is commercial or not." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isDefaultProfile
+:isDefaultProfile rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf :hasAgentProperty ;
+                  rdfs:domain :Twitter_User ;
+                  rdfs:range xsd:boolean ;
+                  rdfs:comment "This property indicates the boolean values. For example, when true, indicates that the user has not altered the theme or background of their user profile" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isLiked
+:isLiked rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+         rdfs:domain :Tweet ;
+         rdfs:range xsd:boolean ;
+         rdfs:comment "Boolean property represents if a tweet is liked or not" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isPossiblySensitive
+:isPossiblySensitive rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+                     rdfs:domain :Tweet ;
+                     rdfs:range xsd:boolean ;
+                     rdfs:comment "Boolean propertt indicates if a tweet contains a link. Iit is an indicator that the URL contained in the Tweet may contain content or media identified as sensitive content" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isQuotedTweet
+:isQuotedTweet rdf:type owl:DatatypeProperty ;
+               rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+               rdfs:domain :Tweet ;
+               rdfs:range xsd:boolean ;
+               rdfs:comment "A boolean property indicates if tweet object of the original tweet that was quoted" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isRetweeted
+:isRetweeted rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+             rdfs:domain :Tweet ;
+             rdfs:range xsd:boolean ;
+             rdfs:comment "A boolean property indicates whether this Tweet has been Retweeted by the authenticating user" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isTruncated
+:isTruncated rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+             rdfs:domain :Social_Media_Object ;
+             rdfs:range xsd:boolean ;
+             rdfs:comment "A boolean property which indicates whether the value of the text parameter was truncated, for example, as a result of a retweet exceeding the original Tweet text length limit of 140 characters." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#isTweetsProtected
+:isTweetsProtected rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf :hasAgentProperty ;
+                   rdfs:domain :Twitter_User ;
+                   rdfs:range xsd:boolean ;
+                   rdfs:comment "A boolean property which ndicates that a user has chosen to protect their Tweets or not." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#liked_tweets
+:liked_tweets rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Twitter_User_Stats ;
+              rdfs:range xsd:long ;
+              rdfs:comment "The number of Tweets this user has liked in the account’s lifetime." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#likes_counts
+:likes_counts rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Social_Stats ;
+              rdfs:range xsd:long ;
+              rdfs:comment "Indicates approximately how many times a Tweet has been liked by Twitter users" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#listed_count
+:listed_count rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Twitter_User_Stats ;
+              rdfs:range xsd:long ;
+              rdfs:comment "Indicates the number of public lists that a user is a member of" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#postStatus
+:postStatus rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+            rdfs:domain :Social_Media_Object ;
+            rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#profile_created_at
+:profile_created_at rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasAgentProperty ;
+                    rdfs:domain :Social_Media_Agent ;
+                    rdfs:comment "A property which represents the UTC datetime that the user account was created." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#retweet_count
+:retweet_count rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Tweet_Stats ;
+               rdfs:range xsd:long ;
+               rdfs:comment "Indicates the number of times this tweet has been retweeted" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#socialMediaContent
+:socialMediaContent rdf:type owl:DatatypeProperty ;
+                    rdfs:subPropertyOf :hasSocialMediaObjectProperty ;
+                    rdfs:domain :Social_Media_Object ;
+                    rdfs:comment "The content of the social media object. It can be either the file or the text associated to the object." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#socialMediaTextContent
+:socialMediaTextContent rdf:type owl:DatatypeProperty ;
+                        rdfs:subPropertyOf :socialMediaContent ;
+                        rdfs:range xsd:string ;
+                        rdfs:comment "The social media content of type text." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#statuses_count
+:statuses_count rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Twitter_User_Stats ;
+                rdfs:range xsd:long ;
+                rdfs:comment "Indicates the number of Tweets (including retweets) issued by a social media user" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlAddress
+:urlAddress rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf :hasUrlProperty ;
+            rdfs:domain :Url ;
+            rdfs:range xsd:string ;
+            rdfs:comment "String containing the full url address" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlFormat
+:urlFormat rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf :hasUrlProperty ;
+           rdfs:domain :Url ;
+           rdfs:range [ rdf:type rdfs:Datatype ;
+                        owl:oneOf [ rdf:type rdf:List ;
+                                    rdf:first "Default" ;
+                                    rdf:rest [ rdf:type rdf:List ;
+                                               rdf:first "Shortened" ;
+                                               rdf:rest rdf:nil
+                                             ]
+                                  ]
+                      ] ;
+           rdfs:comment "The format of an url can be \"Default\" or \"Shortened\"." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlIndice1
+:urlIndice1 rdf:type owl:DatatypeProperty ;
+            rdfs:domain :IncludedURL ;
+            rdfs:range xsd:int ;
+            rdfs:comment "Indicates the first position of URLs in the tweet (string) where that entity (mention) is" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlIndice2
+:urlIndice2 rdf:type owl:DatatypeProperty ;
+            rdfs:domain :IncludedURL ;
+            rdfs:range xsd:int ;
+            rdfs:comment "Indicates the second position of URLs in the tweet (string) where that entity (mention) is" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlProtocol
+:urlProtocol rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :hasUrlProperty ;
+             rdfs:range [ rdf:type rdfs:Datatype ;
+                          owl:oneOf [ rdf:type rdf:List ;
+                                      rdf:first "ftp" ;
+                                      rdf:rest [ rdf:type rdf:List ;
+                                                 rdf:first "ftps" ;
+                                                 rdf:rest [ rdf:type rdf:List ;
+                                                            rdf:first "http" ;
+                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                       rdf:first "https" ;
+                                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                                  rdf:first "mailto" ;
+                                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                                             rdf:first "sftp" ;
+                                                                                             rdf:rest rdf:nil
+                                                                                           ]
+                                                                                ]
+                                                                     ]
+                                                          ]
+                                               ]
+                                    ]
+                        ] ;
+             rdfs:comment "Attribute determining the protocol of the URL The possible values are {\"ftp\" , \"ftps\" , \"http\" , \"https\" , \"mailto\" , \"sftp\"}" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#urlTld
+:urlTld rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :hasUrlProperty ;
+        rdfs:range [ rdf:type rdfs:Datatype ;
+                     owl:oneOf [ rdf:type rdf:List ;
+                                 rdf:first ".ac.uk" ;
+                                 rdf:rest [ rdf:type rdf:List ;
+                                            rdf:first ".co.uk" ;
+                                            rdf:rest [ rdf:type rdf:List ;
+                                                       rdf:first ".com" ;
+                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                  rdf:first ".gov" ;
+                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                             rdf:first ".org" ;
+                                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                                        rdf:first "other" ;
+                                                                                        rdf:rest rdf:nil
+                                                                                      ]
+                                                                           ]
+                                                                ]
+                                                     ]
+                                          ]
+                               ]
+                   ] ;
+        rdfs:comment "Attribute determining the TLD of an URL. The possible values are: {\".ac.uk\" , \".co.uk\" , \".com\" , \".gov\" , \".org\" , \"other\"}" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#user_image_secure_url
+:user_image_secure_url rdf:type owl:DatatypeProperty ;
+                       rdfs:domain :User_Image ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "A HTTPS-based URL pointing to the user’s profile image" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#user_image_url
+:user_image_url rdf:type owl:DatatypeProperty ;
+                rdfs:domain :User_Image ;
+                rdfs:range xsd:string ;
+                rdfs:comment "The HTTP-based URL pointing to the standard web representation of the user’s" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#user_mention_indice1
+:user_mention_indice1 rdf:type owl:DatatypeProperty ;
+                      rdfs:domain :Twitter_Mentions ;
+                      rdfs:range xsd:int ;
+                      rdfs:comment "Represents the first indices of other Twitter users mentioned in the text of the Tweet" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#user_mention_indice2
+:user_mention_indice2 rdf:type owl:DatatypeProperty ;
+                      rdfs:domain :Twitter_Mentions ;
+                      rdfs:range xsd:int ;
+                      rdfs:comment "Represents the second indices of other Twitter users mentioned in the text of the Tweet" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Advert
+:Advert rdf:type owl:Class ;
+        rdfs:subClassOf :Social_Media_Object ;
+        rdfs:comment "An Advert is a Social_Media_Object that presents an advertising message in a medium. It can be further characterised in type by its subclasses and it is typically associated to an advertiser (isAdvertisedBy) which is not necessarily the creator or distrubutor of the content. It is further characterised through the properties isCommertialAdvert (boolean) and by the advertPlatformType, which can take the values of \"business\" or \"private\"." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Advertiser
+:Advertiser rdf:type owl:Class ;
+            rdfs:subClassOf :Social_Media_Agent ;
+            rdfs:comment """Advertiser is defined as a Social_Media_Agent that may advertise some content. Such content may be publicised by itself of via any other Social_Media_User.
+Axiomatically, any Social_Media_Agent that advertises content is an Advertiser.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Animation
+:Animation rdf:type owl:Class ;
+           rdfs:subClassOf :Social_Media_Object ;
+           rdfs:comment "An animation file with its metadata, which is linked in the standard way for any Social_Media_Object. Anumation file objects can be part of Multimedia objects." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Audio
+:Audio rdf:type owl:Class ;
+       rdfs:subClassOf :Social_Media_Object ;
+       rdfs:comment "An audio file with its metadata, which is linked in the standard way for any Social_Media_Object. Audio file objects can also belong to the class Streaming_Media_Object and can be part of Multimedia objects." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#BusinessPlatform
+:BusinessPlatform rdf:type owl:Class ;
+                  rdfs:subClassOf :Platform ;
+                  owl:disjointWith :PersonalPlatform ;
+                  rdfs:comment "BusinessPlatform is a concept Platform that is owned by a business. BusinessPlatform is mutually exclusive with PersonalPlatform." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#ChannelRelation
+:ChannelRelation rdf:type owl:Class ;
+                 rdfs:subClassOf :SocialMediaRelation ;
+                 rdfs:comment "A relationship of subscription between a user and a channel. A channel is an internal environment within a social media platform, providing content for users who are part of the channel, by means such as subscription. An example is YouTube channel." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#ChatComment
+:ChatComment rdf:type owl:Class ;
+             rdfs:subClassOf :Engagement ;
+             rdfs:comment "Communication between two users on a social media platform. Communicated data can contain text, adverts, and files such as audio, video files, etc." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Comment
+:Comment rdf:type owl:Class ;
+         rdfs:subClassOf :PostEngagement ;
+         rdfs:comment "A comment written by the user on the post where the fake news are published. The property hasComment allow us to store the text input." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#ConnectionRelation
+:ConnectionRelation rdf:type owl:Class ;
+                    rdfs:subClassOf :SocialMediaRelation ;
+                    rdfs:comment "Connection denotes a relationship between two individuals, the origin agent and the target agent." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Covid19_News_Transmission_Event
+:Covid19_News_Transmission_Event rdf:type owl:Class ;
+                                 rdfs:subClassOf :News_Transmission_Event ;
+                                 rdfs:comment "Covid19_News_Transmission_Events are News_Transmission_Events in which the news transmitted are about Covid-19." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Date
+:Date rdf:type owl:Class ;
+      rdfs:subClassOf :Social_Metadata ;
+      rdfs:comment "Date is a kind of Social_Metadata that can be associated to diverse social media objects. Date concepts not only store the value (date) of the metadata property but also aspects of the format in which it is recorded. The subconcepts refine Date in function of its format and allow for further characterisation." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Display_Ads_Advert
+:Display_Ads_Advert rdf:type owl:Class ;
+                    rdfs:subClassOf :Advert ;
+                    rdfs:comment "Graphic advertising on social media through banners or other advertising formats made of text, images, flash, video, and audio. The main purpose of display advertising is to deliver general advertisements and brand messages to users." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Engagement
+:Engagement rdf:type owl:Class ;
+            rdfs:subClassOf :NewsConcept ;
+            rdfs:comment """Engagement is a high-level concept that is typically used in the context of a News_Transmission_Event and characterises how a user engaes with a News_Object. For instance, it may do it through liking a post containing the fake news.
+
+Subclasses of Engagement can be used to further specify the type of interaction.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Fake_News_Transmission_Event
+:Fake_News_Transmission_Event rdf:type owl:Class ;
+                              rdfs:subClassOf :Covid19_News_Transmission_Event ,
+                                              :Generic_News_Transmission_Event ;
+                              rdfs:comment "Fake_News_Transmission_Events are News_Transmission_Events in which the news transmitted are fake news." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#FollowRelation
+:FollowRelation rdf:type owl:Class ;
+                rdfs:subClassOf :ConnectionRelation ;
+                rdfs:comment "Connection denotes a following or subscription relationship between two individuals, the origin agent and the target agent" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#FriendshipRelation
+:FriendshipRelation rdf:type owl:Class ;
+                    rdfs:subClassOf :ConnectionRelation ;
+                    rdfs:comment "Connection denotes a friendship relationship between two individuals, the origin agent and the target agent" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Generic_News_Transmission_Event
+:Generic_News_Transmission_Event rdf:type owl:Class ;
+                                 rdfs:subClassOf :News_Transmission_Event ;
+                                 rdfs:comment "Generic_News_Transmission_Events are News_Transmission_Events in which the news transmitted are general news." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#GroupMembershipRelation
+:GroupMembershipRelation rdf:type owl:Class ;
+                         rdfs:subClassOf :SocialMediaRelation ;
+                         rdfs:comment "A relationship of membership between a user and a group." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Image
+:Image rdf:type owl:Class ;
+       rdfs:subClassOf :Social_Media_Object ;
+       rdfs:comment "An image file with its metadata, which is linked in the standard way for any Social_Media_Object. It has the property hasImageFormat that takes one from a set of values.It can be part of Multimedia object." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#IncludedURL
+:IncludedURL rdf:type owl:Class ;
+             rdfs:subClassOf :NewsConcept ;
+             rdfs:comment "This concept tells that a social media object (e.g., post, tweet, news, and etc) includes urls." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Like
+:Like rdf:type owl:Class ;
+      rdfs:subClassOf :PostEngagement ;
+      rdfs:comment "A like by the user on the post where the fake news are published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Mentions
+:Mentions rdf:type owl:Class ;
+          rdfs:subClassOf :PostEngagement ;
+          rdfs:comment "A mention by the user to another user on the post where the fake news are published. Via the property mentionsUser it is possible to link the mentioned users." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Multimedia
+:Multimedia rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasPart ;
+                                  owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                                  owl:onClass [ rdf:type owl:Class ;
+                                                owl:unionOf ( :Animation
+                                                              :Audio
+                                                              :Image
+                                                              :Text
+                                                              :Video
+                                                            )
+                                              ]
+                                ] ;
+            rdfs:subClassOf :Social_Media_Object ;
+            rdfs:comment "An Multimedia file with its metadata, which is linked in the standard way for any Social_Media_Object. Multimedia file objects are axiomatically defined as those having at least two other types of Social_Media_Object as parts, such as a text part and a video part." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#NewsConcept
+:NewsConcept rdf:type owl:Class ;
+             rdfs:comment """NewsConcept is the top-concept of the Fake News Ontology, so that all concepts of the ontology are subsumed by it. 
+NewsConcept can be thought as a utility concept and has some standard properties, namely UID and hasDescription, so that they apply to any concept of the FNO ontology.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#News_Transmission_Event
+:News_Transmission_Event rdf:type owl:Class ;
+                         rdfs:subClassOf :NewsConcept ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasContent ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass :Social_Media_Object
+                                         ] ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasPublisher ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass :Social_Media_User
+                                         ] ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasCircus ;
+                                           owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass :SocialMediaRelation
+                                         ] ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasEngagement ;
+                                           owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass :Engagement
+                                         ] ;
+                         rdfs:comment "News_Transmission_Events are the fundamental concepts that are modelled in this ontology, where news are considered to be any kind of content that is being transmitted in social media. However, they are not only characterised by some content (containing the -possibly fake- news) but also by the context of occurrence. The latter includes the user that encountered the news, their origin, the (possible) engagement of the user with it and the (possible) advertisers that promote the content among other." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Notify
+:Notify rdf:type owl:Class ;
+        rdfs:subClassOf :Engagement ;
+        rdfs:comment "Engagement with a news object by receiving a notification. Such as notifications on Facebook and for new videos on YouTube." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#NumericDate
+:NumericDate rdf:type owl:Class ;
+             rdfs:subClassOf :Date ;
+             owl:disjointWith :StringDate ;
+             rdfs:comment "A NumericDate is a Date with a numeric format. The specific format is characterised by the properties: hasDateSeparator, hasFormat and hasYearFormat." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Paid_Content_Promo_Advert
+:Paid_Content_Promo_Advert rdf:type owl:Class ;
+                           rdfs:subClassOf :Advert ;
+                           rdfs:comment "Promotion of content (adverts in this case) to a highly specific audience, attract qualified traffic and leads, and grow your customer base." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Paid_Influencer_Advert
+:Paid_Influencer_Advert rdf:type owl:Class ;
+                        rdfs:subClassOf :Advert ;
+                        rdfs:comment """An advertiser collaborating with an online influencer (such as a social media user) to market one of its products or services.
+
+A Paid_Influencer_Advert can be related not only to its advertiser (as a default from being a subconcept of Advert) but also to the influencer via its user account, via the role isRelatedToInfluencer.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Pay_Per_Click_Advert
+:Pay_Per_Click_Advert rdf:type owl:Class ;
+                      rdfs:subClassOf :Advert ;
+                      rdfs:comment "Advertising model used to drive traffic to social media platforms in which an advertiser pays a user publicising the ad when the ad is clicked." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#PersonalPlatform
+:PersonalPlatform rdf:type owl:Class ;
+                  rdfs:subClassOf :Platform ;
+                  rdfs:comment "PersonalPlatform is a concept Platform that is not owned by a business. PersonalPlatform is mutually exclusive with BusinessPlatform." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Platform
+:Platform rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Class ;
+                                owl:unionOf ( :BusinessPlatform
+                                              :PersonalPlatform
+                                            )
+                              ] ;
+          rdfs:subClassOf :NewsConcept ;
+          rdfs:comment """The Platform concept is used to characterise the platform in which an advert is published. The tailored attributes hasPlatformDescription and hasPlatformTitle are used to provide the relevant information, and the two subconcepts are used to refine the kind of platform. A UID can also be given, like for any NewsConcept.
+
+The class is defined as the disjunction of its subclasses, which are mutually exclusive.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#PostEngagement
+:PostEngagement rdf:type owl:Class ;
+                rdfs:subClassOf :Engagement ;
+                rdfs:comment "PostEngagement is a high-level concept that includes all the engagement instances that occur in the context of a post. Subclasses of PostEngagement should be used to further specify the nature of the engagement, as well as to link additional information such as linked users." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Profile_Background
+:Profile_Background rdf:type owl:Class ;
+                    rdfs:subClassOf :User_Image ;
+                    rdfs:comment "A metadata Class that represents metadata about a social media user's profile background image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Profile_Banner
+:Profile_Banner rdf:type owl:Class ;
+                rdfs:subClassOf :User_Image ;
+                rdfs:comment "A metadata Class that represents metadata about a social media user's profile banner image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Profile_Image
+:Profile_Image rdf:type owl:Class ;
+               rdfs:subClassOf :User_Image ;
+               rdfs:comment "A metadata Class that represents metadata about a social media user's profile image." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Red_News_Transmission_Event
+:Red_News_Transmission_Event rdf:type owl:Class ;
+                             rdfs:subClassOf :Covid19_News_Transmission_Event ,
+                                             :Generic_News_Transmission_Event ;
+                             rdfs:comment "Red_News_Transmission_Events are News_Transmission_Events in which the news transmitted are considered as red alert news." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Repost
+:Repost rdf:type owl:Class ;
+        rdfs:subClassOf :PostEngagement ;
+        rdfs:comment "A repost by the user of  the post where the fake news are published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Retargeting_Advert
+:Retargeting_Advert rdf:type owl:Class ;
+                    rdfs:subClassOf :Advert ;
+                    rdfs:comment "A form of advertising targeted to users based on their previous actions when they engaged with the advert" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Review
+:Review rdf:type owl:Class ;
+        rdfs:subClassOf :PostEngagement ;
+        rdfs:comment "A review written by the user on the post where the fake news are published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#SearchResult
+:SearchResult rdf:type owl:Class ;
+              rdfs:subClassOf :Engagement ;
+              rdfs:comment "The engagement occurs as a consequence of a search; the fake news content is hence a SearchResult. The text of the query can be consulted via the property hasSearchText. Further information on the search is given by hasSearchDate." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Share
+:Share rdf:type owl:Class ;
+       rdfs:subClassOf :PostEngagement ;
+       rdfs:comment "A share by the user of the post where the fake news are published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#SocialMediaRelation
+:SocialMediaRelation rdf:type owl:Class ;
+                     rdfs:subClassOf :NewsConcept ;
+                     rdfs:comment "SocialMediaRelation denotes a relationship between a social media agent and another social media entity, be that another agent, a group or a channel. When linked to a News_Transmission_Event it determines the circus or origin of the  news object." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Social_Media_Agent
+:Social_Media_Agent rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Class ;
+                                          owl:unionOf ( :Advertiser
+                                                        :Social_Media_User
+                                                      )
+                                        ] ;
+                    rdfs:subClassOf :NewsConcept ;
+                    rdfs:comment """Social_Media_Agent is a high-level concept that denotes different types of agents in social media.  
+
+In the context of a News_Transmission_Event, a social media agent encounters or promotes the fake news content. Such a promotion can be made in the form of a traditional advertisement or as a result of the interaction of the user with the  news content, for instance by searching it, liking it or retweeting it.
+
+Social_Media_Agent is defined as the disjunction of its subclasses, which are not mutually exclusive. That is, a Social_Media_Agent can be simultaneously a Social_Media_User and an Advertiser. This would be the case, for instance, with a business having a user_profile in social media.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Social_Media_Object
+:Social_Media_Object rdf:type owl:Class ;
+                     rdfs:subClassOf :NewsConcept ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty :hasSocialMetadata ;
+                                       owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                       owl:onClass :Title
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty :hasSocialMetadata ;
+                                       owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                       owl:onClass :Url
+                                     ] ;
+                     owl:disjointUnionOf ( :Animation
+                                           :Audio
+                                           :Image
+                                           :Multimedia
+                                           :Text
+                                           :Video
+                                         ) ;
+                     rdfs:comment """Social_Media_Object is a high-level concept that represents an information item that is published in a social media platform. The concept is further specified by its subclasses. 
+
+In particular, Social_Media_Object is the disjoint union of the possible data types, namely Animation, Image, Audio, Multimedia, Text and Video. Other non-disjoint subconcepts further specify the nature of the object, which can be specified to be an Advert or a Streaming_Media_Object.
+
+Social_Media_Object are associated to at most one title and one URL, and they can be associated to further elements of the class Social_Metadata, such as the publication and creation dates (hasCreatedDate and hasPublishedDate respectively). Moreover, they can be partOf a News_Transmission_Event. Finally, they can be linked to the file or text to which they refer to via the property socialMediaContent.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Social_Media_User
+:Social_Media_User rdf:type owl:Class ;
+                   rdfs:subClassOf :Social_Media_Agent ;
+                   rdfs:comment """A Social_Media_User is a  Social_Media_Agent with a user profile in some platform that interacts with social media content. In particular, News_Transmission_Events are associated to exactly one Social_Media_User which is responsible for such transmission or itneraction.
+
+Social_Media_User can be further characterised by some personal information properties such as hasAge, and by some features of its social media account, particularly hasPrivacy and hasStatus.""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Social_Metadata
+:Social_Metadata rdf:type owl:Class ;
+                 rdfs:subClassOf :NewsConcept ,
+                                 [ rdf:type owl:Class ;
+                                   owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                   owl:onProperty :partOf ;
+                                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                   owl:onClass :SearchResult
+                                                 ]
+                                                 [ rdf:type owl:Restriction ;
+                                                   owl:onProperty :partOf ;
+                                                   owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                   owl:onClass :Social_Media_Object
+                                                 ]
+                                               )
+                                 ] ;
+                 rdfs:comment "Social_Metadata is a concept containing one item of metadata that is relevant to exactly one Social_Media_Object, to which it is linked to via the property hasSocialMetadata. Social_Metadata is further refined in type by its disjoint subconcepts." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Social_Stats
+:Social_Stats rdf:type owl:Class ;
+              rdfs:subClassOf :NewsConcept ;
+              rdfs:comment "A class that represents the statistical information of social objects" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Streaming_Media_Object
+:Streaming_Media_Object rdf:type owl:Class ;
+                        rdfs:subClassOf :Social_Media_Object ;
+                        rdfs:comment "A Streaming_Media_Object is any time of Social_Media_Object that is transmited live. This class is disjoint with Text and Image but not with other subconcepts of Social_Media_Object. Hence we will typically find that a Streaming_Media_Object that is also associated to a particular type of media, for instance Audio." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#StringDate
+:StringDate rdf:type owl:Class ;
+            rdfs:subClassOf :Date ;
+            rdfs:comment "A StringDate is a date in textual format" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#SubscriptionItem
+:SubscriptionItem rdf:type owl:Class ;
+                  rdfs:subClassOf :Engagement ;
+                  rdfs:comment "SubscriptionItem is the subconcept of Engagement that occurs as a result of a subscription to some sort social media entity." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Tagging
+:Tagging rdf:type owl:Class ;
+         rdfs:subClassOf :PostEngagement ;
+         rdfs:comment "A tag (or more) added by the user on the post where the fake news are published. The property tagsUser allows us to link the tagged Social_Media_Users." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Text
+:Text rdf:type owl:Class ;
+      rdfs:subClassOf :Social_Media_Object ;
+      rdfs:comment "An text file with its metadata, which is linked in the standard way for any Social_Media_Object. Text file objects can be part of Multimedia objects. The textual content of the object is accessible via the property hasText" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Title
+:Title rdf:type owl:Class ;
+       rdfs:subClassOf :Social_Metadata ;
+       rdfs:comment "Title is a sunconcept of Social_Metadata that is relevant to social media objects. In particular, several types of social media onbjects may have one and at most one title, which is further characterised by the property isAlphanumeric" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Tweet
+:Tweet rdf:type owl:Class ;
+       rdfs:subClassOf :Social_Media_Object ;
+       rdfs:comment "A tweet with its metadata, a subclass of Social_Media_Object" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Tweet_Entities
+:Tweet_Entities rdf:type owl:Class ;
+                rdfs:subClassOf :NewsConcept ;
+                rdfs:comment "Entities provide metadata and additional contextual information about content posted on Twitter. Attributes of an entity may include  set of hashtags, urls, user_mentions, and symbols." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Tweet_Stats
+:Tweet_Stats rdf:type owl:Class ;
+             rdfs:subClassOf :Social_Stats ;
+             rdfs:comment "Subclass of Social_Stat, a Tweet_Stats represents the statistical information (e.g., retweet_count, etc.) of a tweet." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Twitter_Mentions
+:Twitter_Mentions rdf:type owl:Class ;
+                  rdfs:subClassOf :Mentions ;
+                  rdfs:comment "A mention by tweeter user to another user on the post where the fake news are published." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Twitter_User
+:Twitter_User rdf:type owl:Class ;
+              rdfs:subClassOf :Social_Media_User ;
+              rdfs:comment "A Twitter_User is a  Social_Media_Agent with a user profile that interacts with social media content." .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Twitter_User_Stats
+:Twitter_User_Stats rdf:type owl:Class ;
+                    rdfs:subClassOf :User_Stats ;
+                    rdfs:comment "A class that represents the statistical information ofa twitter user" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Url
+:Url rdf:type owl:Class ;
+     rdfs:subClassOf :Social_Metadata ;
+     rdfs:comment """Url is a sunconcept of Social_Metadata that is relevant to social media objects.
+In particular, several types of social media onbjects may have one and at most one url, which is further characterised by the properties of the family hasUrlProperty""" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#User_Image
+:User_Image rdf:type owl:Class ;
+            rdfs:subClassOf :User_Metadata ;
+            rdfs:comment "A metadata Class that represents metadata about a user images (e.g., profile image, background image, etc.)" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#User_Metadata
+:User_Metadata rdf:type owl:Class ;
+               rdfs:subClassOf :NewsConcept ;
+               rdfs:comment "A metadata Class that represents metadata about a social media user (e.g., profile image, background image, etc.)" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#User_Stats
+:User_Stats rdf:type owl:Class ;
+            rdfs:subClassOf :NewsConcept ;
+            rdfs:comment "A class that represents the statistical information of social media user" .
+
+
+###  http://www.semanticweb.org/developer/ontologies/2020/3/Fake_news_Ontology#Video
+:Video rdf:type owl:Class ;
+       rdfs:subClassOf :Social_Media_Object ;
+       rdfs:comment "A video file with its metadata, which is linked in the standard way for any Social_Media_Object. Video file objects can also belong to the class Streaming_Media_Object and can be part of Multimedia objects." .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ owl:intersectionOf ( :Social_Media_Agent
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty :advertises ;
+                         owl:someValuesFrom :Advert
+                       ]
+                     ) ;
+  rdf:type owl:Class ;
+  rdfs:subClassOf :Advertiser
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Animation
+                :Audio
+                :Image
+                :Text
+                :Video
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Image
+                :Streaming_Media_Object
+                :Text
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
