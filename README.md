@@ -1,1 +1,1 @@
-# fandet-ontology
+Fandet Ontology is based on the OWL standard and provides semantic descriptions for objects and entities within the social data domain. It defines context for different social media data and establishes relationships between them. The ontology is beneficial to the public domain for modelling social media data in RDF format, thereby facilitating use of the data for diverse purposes such as fraud detection, identity resolution, data mining for insights and enhanced text analytics for the domain.
